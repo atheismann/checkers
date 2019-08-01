@@ -3,9 +3,9 @@
 	2. Define the winning move, when a player no longer has any pieces on the board
 
 2. Define required variables used to track the state of the game:
-  1. Use a board array to represent the squares.
-  2. Use a turn variable to remember whose turn it is.
-  3. Use a winner variable to represent four different possibilities - player that won, a tie, game in play, or player resigned.
+  	1. Use a board array to represent the squares.
+  	2. Use a turn variable to remember whose turn it is.
+  	3. Use a winner variable to represent four different possibilities - player that won, a tie, game in play, or player resigned.
 
 
 3. Store elements on the page that will be accessed in code more than once in variables to make code more concise, readable and performant:
@@ -52,6 +52,6 @@
 	1. Do steps 4.1 (initialize the state variables) and 4.2 (render).
 
 7. Handle a player "kinging" a piece:
-  1. Render King Message
-  2. Render King piece
-  3. Continue game
+ 	1. Render King Message
+  	2. Render King piece
+  	3. Continue game
