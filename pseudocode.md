@@ -2,15 +2,16 @@
 	1. Define a colors object with keys of 'null' (when the piece div is empty), and players 1 & -1. The value assigned to each key represents the color to display for an empty square (null), player 1 and player -1.
 	2. Define the winning move, when a player no longer has any pieces on the board
 
-2 Define required variables used to track the state of the game:
-	1. Use a board array to represent the squares.	2.2) Use a turn variable to remember whose turn it is.
-	2. Use a winner variable to represent four different possibilities - player that won, a tie, game in play, or player resigned.
+2. Define required variables used to track the state of the game:
+	1. Use a board array to represent the squares.	
+  2. Use a turn variable to remember whose turn it is.
+	3. Use a winner variable to represent four different possibilities - player that won, a tie, game in play, or player resigned.
 
 
-3 Store elements on the page that will be accessed in code more than once in variables to make code more concise, readable and performant:
+3. Store elements on the page that will be accessed in code more than once in variables to make code more concise, readable and performant:
 	1. Store the elements that represent the squares and pieces on the page.
 
-4)Upon loading the app should:
+4. Upon loading the app should:
 	1. Initialize the state variables:
 		1. Initialize the board array to 64 nulls to represent empty squares. The 64 elements will "map" to each square, where index 0 maps to the top-left square and index 64 maps to the bottom-right square.
 		2. Initialize whose turn it is to 1 (player 'Blue'). Player 'White' will be represented by -1.
