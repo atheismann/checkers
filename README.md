@@ -6,7 +6,7 @@
 Remove all of your opponent's checkers from the gameboard by capturing them.
 
 ### How to play?
-Player 1 will go first.
+- Player 1 will go first.
 - On your turn, move any one of your checkers by the movement rules described below.  
 - After you move one checker, your turn is over.  
 - The game continues with players alternating turns.
