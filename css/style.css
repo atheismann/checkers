@@ -16,9 +16,21 @@ table{
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
 }
 
-
+header{
+  display: flex;
+  justify-content: space-between;
+}
+button#giveUp{
+  background-color:#FDDA65;
+  border-radius: 50px;
+  height: 40px;
+  width: 100px;
+  border: none;
+  margin: 20px 0;
+}
 
 .red{
   background-color :#FB0000;
