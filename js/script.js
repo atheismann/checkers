@@ -27,7 +27,7 @@ let msgEl = document.getElementById('msg');
 /*----- functions -----*/
 function init(){
     board = [
-        [0, 1, 0, 1, 0, 1, 0, 1],
+        [0, 1, 0, 1, 0, "1K", 0, 1],
         [1, 0, 1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 0, 1],
         [0, 0, 0, 0, 0, 0, 0, 0],
@@ -47,7 +47,11 @@ function render(){
     board.forEach(function(rowArr, rowIdx){
         rowArr.forEach(function(cell, colIdx){
             let checker = document.getElementById(`r${rowIdx}c${colIdx}`);
-            if(cell === 1 || cell === -1){
+            if(cell === "1K" || cell === "-1K"){
+              let king = cell.slice(-1);
+              cell = cell.slice(0,-1)
+              checker.src = `${PLAYER[cell][king]}`;
+            } else if(cell === 1 || cell === -1){
               checker.src = `${PLAYER[cell].P}`
             };
         });
