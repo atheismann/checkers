@@ -1,16 +1,17 @@
 /*----- constants -----*/ 
 let PLAYER = {
-    "0": null,
-    "1": "Black",
-    "-1": "White",
+    "0": 0,
+    "1": {
+        name: "Black",
+        P: "img/black_piece.png",
+        K: "img/black_king.png",
+    },
+    "-1": {
+        name: "White",
+        P: "img/white_piece.png",
+        K: "img/white_king.png",
+    },
 };
-let PIECES = {
-    "1": "img/black_piece.png",
-    "1K": "img/black_king.png",
-    "-1": "img/white_piece.png",
-    "-1K": "img/white_kings.png",
-};
-
 /*----- app's state (variables) -----*/ 
 let board, turn, winner;
 
@@ -26,26 +27,29 @@ let msgEl = document.getElementById('msg');
 /*----- functions -----*/
 function init(){
     board = [
-        [0, -1, 0, -1, 0, -1, 0, -1],
-        [-1, 0, -1, 0, -1, 0, -1, 0],
-        [0, -1, 0, -1, 0, -1, 0, -1],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 0, 1],
         [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [-1, 0, -1, 0, -1, 0,-1, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+        [-1, 0, -1, 0, -1, 0, -1, 0],
     ];
     turn = 1;
     winner = null;
-    // render();
+    render();
 }
+
 
 function render(){
     //render the board
-    board.forEach(function(colArr, colIdx){
-        colArr.forEach(function(cell, rowIdx){
-            let piece = document.getElementById(`r${rowIdx}c${colIdx}`);
-            piece.
-        })
+    board.forEach(function(rowArr, rowIdx){
+        rowArr.forEach(function(cell, colIdx){
+            let checker = document.getElementById(`r${rowIdx}c${colIdx}`);
+            if(cell === 1 || cell === -1){
+              checker.src = `${PLAYER[cell].P}`
+            };
+        });
     });
 }
