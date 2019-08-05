@@ -22,6 +22,7 @@ header{
   display: flex;
   justify-content: space-between;
 }
+
 button#giveUp{
   background-color:#FDDA65;
   border-radius: 50px;
@@ -31,11 +32,18 @@ button#giveUp{
   margin: 20px 0;
 }
 
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .red{
   background-color :#FB0000;
   height: 10vh;
   width: 10vmin;
 }
+
 .white{
   background-color: #FFFFFF;
   height: 10vh;
