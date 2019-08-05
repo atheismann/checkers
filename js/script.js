@@ -18,6 +18,7 @@ let board, turn, winner;
 
 /*----- cached element references -----*/ 
 let msgEl = document.getElementById('msg');
+let btn = document.getElementById('btn');
 
 
 /*----- event listeners -----*/ 
@@ -27,18 +28,17 @@ let msgEl = document.getElementById('msg');
 /*----- functions -----*/
 function init(){
     board = [
-        [0, 1, 0, 1, 0, "1K", 0, 1],
+        [0, 1, 0, 1, 0, "1", 0, 1],
         [1, 0, 1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 0, 1],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [-1, 0, -1, 0, -1, 0,-1, 0],
+        [0, 0, 0, 0, 0, "1K", 0, 0],
+        [0, 0, "-1K", 0, 0, 0, 0, 0],
+        [-1, 0, -1, 0, "-1", 0,-1, 0],
         [0, -1, 0, -1, 0, -1, 0, -1],
         [-1, 0, -1, 0, -1, 0, -1, 0],
     ];
     turn = 1;
     winner = null;
-    render();
 }
 
 
@@ -51,9 +51,24 @@ function render(){
               let king = cell.slice(-1);
               cell = cell.slice(0,-1)
               checker.src = `${PLAYER[cell][king]}`;
-            } else if(cell === 1 || cell === -1){
+            } else if(cell == 1 || cell == -1){
               checker.src = `${PLAYER[cell].P}`
             };
         });
     });
-}
+
+    if(winner) {
+        if(winner === 'T') {
+            msgEl.textContent = 'So Sorry! We have a tie game!!'
+        } else {
+            msgEl.textContent = `${PLAYER[winner].name} Wins!`
+        }
+    } else {
+        msgEl.textContent = `${PLAYER[turn].name}'s Turn!`
+    };
+    btn.innerHTML = 'Give Up!';
+};
+
+document.getElementById('btn').addEventListener('click', render);
+
+init();
