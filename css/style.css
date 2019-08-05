@@ -18,6 +18,12 @@ table{
   align-items: center;
 }
 
+h2{
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
 header{
   display: flex;
   justify-content: space-between;
