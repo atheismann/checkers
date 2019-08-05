@@ -20,9 +20,10 @@ let board, turn, winner;
 let msgEl = document.getElementById('msg');
 let btn = document.getElementById('btn');
 
-
 /*----- event listeners -----*/ 
+document.querySelectorAll('img').forEach(img => img.addEventListener('click', handlePieceSelctor));
 
+// document.querySelectorAll('img').forEach(function (node) {node.addEventListener('click', handlePieceSelctor)});
 
 
 /*----- functions -----*/
@@ -46,7 +47,7 @@ function render(){
     //render the board
     board.forEach(function(rowArr, rowIdx){
         rowArr.forEach(function(cell, colIdx){
-            let checker = document.getElementById(`r${rowIdx}c${colIdx}`);
+            let checker = document.getElementById(`r${rowIdx}c${colIdx}`).querySelector('img');
             if(cell === "1K" || cell === "-1K"){
               let king = cell.slice(-1);
               cell = cell.slice(0,-1)
@@ -70,5 +71,17 @@ function render(){
 };
 
 document.getElementById('btn').addEventListener('click', render);
+
+function handlePieceSelctor(evt){
+    let idx = evt.target.id;
+    let rowIdx = idx.charAt(1);
+    let colIdx = idx.charAt(3);
+    evt.target.style.opacity = "0.5";
+
+
+
+
+    console.log(evt);
+};
 
 init();
