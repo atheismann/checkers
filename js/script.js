@@ -40,19 +40,29 @@ class piece{
 
     };
 
-    move(initIdx, finIdx, pieceMoved, pieceMovedTo){ 
-        pieceMovedTo = pieceMoved;
-        pieceMoved = 0;
+    move(initIdx, finIdx, pieceMoved){ 
+        board[finIdx['row']][finIdx['col']] = pieceMoved;
+        board[initIdx['row']][initIdx['col']] = 0;
 
-    }
-    checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo){
-        console.log(finIdx.colorCode);
-        // while (!finIdx == 0 || !finIdx.colorCode == this.colorCode) {
-        //     this.move(initIdx, finIdx, pieceMoved, pieceMovedTo);
-        // };
+        render();
+
     };
 
-    checkMove(initIdx, finIdx, pieceMoved, pieceMovedTo){
+    checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo){
+        console.log('this works');
+        console.log(pieceMovedTo);
+        console.log(pieceMoved);
+
+        while (!pieceMovedTo == 0 && !pieceMovedTo.colorCode == this.colorCode) {
+            this.move(initIdx, finIdx, pieceMoved, pieceMovedTo);
+        }
+        if(pieceMovedTo == 0){
+            this.move(initIdx, finIdx, pieceMoved, pieceMovedTo);
+        }
+    
+    };
+
+    checkMove(initSq, initIdx, finIdx, pieceMoved, pieceMovedTo){
         if(parseInt(initIdx['col'] - finIdx['col']) == -1 || parseInt(initIdx['col'] - finIdx['col']) == 1){        
             if(parseInt(initIdx['row'] - finIdx['row']) < 0 && parseInt(initIdx['row'] - finIdx['row']) >= -1 && pieceMoved.colorCode == 1) {
                 this.checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo);
@@ -61,11 +71,13 @@ class piece{
             } else if(this.rank == 'king'){
                 this.checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo);
             } else {
-                return;
+                initSq.target.style.opacity = '1';
+                alert('This Move is Not Valid!');   
             };
 
         } else {
-            return;
+            initSq.target.style.opacity = '1';
+            alert('This Move is Not Valid!');
         };
     };
 };
@@ -84,11 +96,6 @@ let btn = document.getElementById('btn');
 document.querySelectorAll('td').forEach(td => td.addEventListener('click', handlePiece));
 
 btn.addEventListener('click', function () {if(btn.textContent === 'Start'){start();}else{init();render();}});
-
-// document.querySelector('td').on('click', 'img', () => {
-//
-// })
-
 
 /*----- functions -----*/
 function init(){
@@ -149,14 +156,12 @@ function handlePiece(evt){
     } else if (initSq) {
         handlePieceMove(initSq, evt);
         initSq = null;
-        // document.querySelectorAll('img').forEach(img => img.getAttribute('opacity') === '0.5')
     }
 };
 
 function handleInitPieceSelctor(initEvt){
-    initSq = initEvt;
     document.querySelectorAll('td').forEach(img => img.setAttribute('style', '1'));
-    initEvt.target.style.opacity = "0.5";
+    initEvt.target.style.opacity = '0.5';
 };
 
 function handlePieceMove(iSq, fSq){
@@ -168,12 +173,19 @@ function handlePieceMove(iSq, fSq){
         'row' : fSq.target.id.charAt(1),
         'col' : fSq.target.id.charAt(3),
     };
-    let pieceMoved = board[initIdx['row']][initIdx['col']];
-    let pieceMovedTo = board[finIdx['row']][finIdx['col']];
     
-    pieceMoved.checkMove(initIdx, finIdx, pieceMoved, pieceMovedTo);
+    let pieceMoved = board[initIdx['row']][initIdx['col']];
 
-    render();
+    if(finIdx['row'] === ''){
+        finIdx = {
+            'row' : fSq.target.parentElement.id.charAt(1),
+            'col' : fSq.target.parentElement.id.charAt(3),
+        }
+    };
+    let pieceMovedTo = board[finIdx['row']][finIdx['col']];
+
+    
+    pieceMoved.checkMove(initSq, initIdx, finIdx, pieceMoved, pieceMovedTo);
 };
 
 function getWinner(){
@@ -187,7 +199,7 @@ function getWinner(){
     } else {
         msgEl.textContent = `${PLAYER[turn].name}'s Turn!`
     };
-
+    turn *= -1;
 };
 
 init();
