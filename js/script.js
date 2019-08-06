@@ -13,7 +13,7 @@ let PLAYER = {
     },
 };
 /*----- app's state (variables) -----*/ 
-let board, turn, winner, initSq;
+let board, turn, winner, initSq, blackScore, whiteScore;
 
 
 /*----- cached element references -----*/ 
@@ -22,23 +22,27 @@ let btn = document.getElementById('btn');
 
 /*----- event listeners -----*/ 
 document.querySelectorAll('img').forEach(img => img.addEventListener('click', handlePiece));
+btn.addEventListener('click', function () {if(btn.textContent === 'Start'){start();}else{init();
+render();}});
+
 
 
 
 /*----- functions -----*/
 function init(){
     board = [
-        [0, "1K", 0, 1, 0, "1", 0, 1],
-        [1, 0, 1, 0, 1, 0, 1, 0],
-        [0, 1, 0, 1, 0, 1, 0, 1],
-        [0, 0, 0, 0, 0, "1K", 0, 0],
-        [0, 0, "-1K", 0, 0, 0, 0, 0],
-        [-1, 0, -1, 0, "-1", 0,-1, 0],
-        [0, -1, 0, -1, 0, -1, 0, -1],
-        [-1, 0, -1, 0, -1, 0, -1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0],
     ];
     turn = 1;
     winner = null;
+    btn.textContent = 'Start';
 };
 
 
@@ -49,29 +53,34 @@ function render(){
             let checker = document.getElementById(`r${rowIdx}c${colIdx}`).querySelector('img');
             if(cell === "1K" || cell === "-1K"){
               let king = cell.slice(-1);
-              cell = cell.slice(0,-1)
+              cell = cell.slice(0,-1);
               checker.src = `${PLAYER[cell][king]}`;
             } else if(cell == 1 || cell == -1){
-              checker.src = `${PLAYER[cell].P}`
+              checker.src = `${PLAYER[cell].P}`;
             } else {
               checker.src = "";
             };
         });
     });
-
-    if(winner) {
-        if(winner === 'T') {
-            msgEl.textContent = 'So Sorry! We have a tie game!!'
-        } else {
-            msgEl.textContent = `${PLAYER[winner].name} Wins!`
-        }
-    } else {
-        msgEl.textContent = `${PLAYER[turn].name}'s Turn!`
-    };
-    btn.innerHTML = 'Give Up!';
+    getWinner();
 };
 
-document.getElementById('btn').addEventListener('click', render);
+function start() {
+    board = [
+        [0, "1K", 0, 1, 0, "1", 0, 1],
+        [1, 0, 1, 0, 1, 0, 1, 0],
+        [0, 1, 0, 1, 0, 1, 0, 1],
+        [0, 0, 0, 0, 0, "1K", 0, 0],
+        [0, 0, "-1K", 0, 0, 0, 0, 0],
+        [-1, 0, -1, 0, "-1", 0,-1, 0],
+        [0, -1, 0, -1, 0, -1, 0, -1],
+        [-1, 0, -1, 0, -1, 0, -1, 0],
+    ];
+    render();
+    btn.textContent = 'Give Up!';
+
+
+}
 
 function handlePiece(evt){
     if(!initSq) {
@@ -103,7 +112,21 @@ function handlePieceMove(iSq, fSq){
         board[finRowIdx][finColIdx] = `${turn}K`;
     }
 
-render();
+    render();
+};
+
+function getWinner(){
+    if(blackScore === 12) {
+        winner = 1
+    } else if(whiteScore === 12){
+        winner = -1
+    };
+    if(winner) {
+        msgEl.textContent = `${PLAYER[winner].name} Wins!`;
+    } else {
+        msgEl.textContent = `${PLAYER[turn].name}'s Turn!`
+    };
+
 };
 
 init();
