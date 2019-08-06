@@ -5,17 +5,19 @@ let PLAYER = {
         name: "Black",
         P: "img/black_piece.png",
         K: "img/black_king.png",
+        score: 0,
     },
     "-1": {
         name: "White",
         P: "img/white_piece.png",
         K: "img/white_king.png",
+        score: 0,
     },
 };
 
 class piece{
     constructor(colorCode, rankCode){
-        this.colorCode = colorCode
+        this.colorCode = colorCode;
         this.rankCode = rankCode;
         this.code = `${colorCode}${rankCode}`;
         this.colorIdent = function(){
@@ -37,6 +39,35 @@ class piece{
         this.img = `img/${this.color}_${this.rank}.png`;
 
     };
+
+    move(initIdx, finIdx, pieceMoved, pieceMovedTo){ 
+        pieceMovedTo = pieceMoved;
+        pieceMoved = 0;
+
+    }
+    checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo){
+        console.log(finIdx.colorCode);
+        // while (!finIdx == 0 || !finIdx.colorCode == this.colorCode) {
+        //     this.move(initIdx, finIdx, pieceMoved, pieceMovedTo);
+        // };
+    };
+
+    checkMove(initIdx, finIdx, pieceMoved, pieceMovedTo){
+        if(parseInt(initIdx['col'] - finIdx['col']) == -1 || parseInt(initIdx['col'] - finIdx['col']) == 1){        
+            if(parseInt(initIdx['row'] - finIdx['row']) < 0 && parseInt(initIdx['row'] - finIdx['row']) >= -1 && pieceMoved.colorCode == 1) {
+                this.checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo);
+            } else if(parseInt(initIdx['row'] - finIdx['row']) > 0 && parseInt(initIdx['row'] - finIdx['row']) <= 1 && pieceMoved.colorCode == -1){
+                this.checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo);
+            } else if(this.rank == 'king'){
+                this.checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo);
+            } else {
+                return;
+            };
+
+        } else {
+            return;
+        };
+    };
 };
 
 /*----- app's state (variables) -----*/ 
@@ -50,10 +81,13 @@ let msgEl = document.getElementById('msg');
 let btn = document.getElementById('btn');
 
 /*----- event listeners -----*/ 
-document.querySelectorAll('img').forEach(img => img.addEventListener('click', handlePiece));
+document.querySelectorAll('td').forEach(td => td.addEventListener('click', handlePiece));
+
 btn.addEventListener('click', function () {if(btn.textContent === 'Start'){start();}else{init();render();}});
 
-
+// document.querySelector('td').on('click', 'img', () => {
+//
+// })
 
 
 /*----- functions -----*/
@@ -70,9 +104,10 @@ function init(){
     ];
     turn = 1;
     winner = null;
+    PLAYER[1].score = 0
+    PLAYER[-1].score = 0
     btn.textContent = 'Start';
 };
-
 
 function render(){
     //render the board
@@ -113,27 +148,30 @@ function handlePiece(evt){
         handleInitPieceSelctor(evt);
     } else if (initSq) {
         handlePieceMove(initSq, evt);
+        initSq = null;
         // document.querySelectorAll('img').forEach(img => img.getAttribute('opacity') === '0.5')
     }
 };
 
 function handleInitPieceSelctor(initEvt){
     initSq = initEvt;
-    document.querySelectorAll('img').forEach(img => img.setAttribute('style', '1'));
+    document.querySelectorAll('td').forEach(img => img.setAttribute('style', '1'));
     initEvt.target.style.opacity = "0.5";
 };
 
 function handlePieceMove(iSq, fSq){
-    let initRowIdx = iSq.target.parentElement.id.charAt(1);
-    let initColIdx = iSq.target.parentElement.id.charAt(3);
-    let finRowIdx = fSq.target.id.charAt(1);
-    let finColIdx = fSq.target.id.charAt(3);
-    let pieceMoved = board[initRowIdx][initColIdx];
-
-    if(!board[initRowIdx][initColIdx] == 0){
-        board[initRowIdx][initColIdx] = 0;
-        board[finRowIdx][finColIdx] = pieceMoved;
+    let initIdx = {
+        'row' : iSq.target.parentElement.id.charAt(1),
+        'col' : iSq.target.parentElement.id.charAt(3),
     };
+    let finIdx = {
+        'row' : fSq.target.id.charAt(1),
+        'col' : fSq.target.id.charAt(3),
+    };
+    let pieceMoved = board[initIdx['row']][initIdx['col']];
+    let pieceMovedTo = board[finIdx['row']][finIdx['col']];
+    
+    pieceMoved.checkMove(initIdx, finIdx, pieceMoved, pieceMovedTo);
 
     render();
 };
