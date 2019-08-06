@@ -23,7 +23,6 @@ let btn = document.getElementById('btn');
 /*----- event listeners -----*/ 
 document.querySelectorAll('img').forEach(img => img.addEventListener('click', handlePieceSelctor));
 
-// document.querySelectorAll('img').forEach(function (node) {node.addEventListener('click', handlePieceSelctor)});
 
 
 /*----- functions -----*/
@@ -72,16 +71,20 @@ function render(){
 
 document.getElementById('btn').addEventListener('click', render);
 
+function handlePiece(evt){
+
+};
+
 function handlePieceSelctor(evt){
     let idx = evt.target.id;
     let rowIdx = idx.charAt(1);
     let colIdx = idx.charAt(3);
-    evt.target.style.opacity = "0.5";
+        document.querySelectorAll('img').forEach(img => img.setAttribute('style', '1'));
+        evt.target.style.opacity = "0.5";
+};
 
+function handleMove(evt){
 
-
-
-    console.log(evt);
 };
 
 init();
