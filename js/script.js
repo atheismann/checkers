@@ -13,7 +13,7 @@ let PLAYER = {
     },
 };
 /*----- app's state (variables) -----*/ 
-let board, turn, winner;
+let board, turn, winner, initSq;
 
 
 /*----- cached element references -----*/ 
@@ -21,14 +21,14 @@ let msgEl = document.getElementById('msg');
 let btn = document.getElementById('btn');
 
 /*----- event listeners -----*/ 
-document.querySelectorAll('img').forEach(img => img.addEventListener('click', handlePieceSelctor));
+document.querySelectorAll('img').forEach(img => img.addEventListener('click', handlePiece));
 
 
 
 /*----- functions -----*/
 function init(){
     board = [
-        [0, 1, 0, 1, 0, "1", 0, 1],
+        [0, "1K", 0, 1, 0, "1", 0, 1],
         [1, 0, 1, 0, 1, 0, 1, 0],
         [0, 1, 0, 1, 0, 1, 0, 1],
         [0, 0, 0, 0, 0, "1K", 0, 0],
@@ -39,7 +39,7 @@ function init(){
     ];
     turn = 1;
     winner = null;
-}
+};
 
 
 function render(){
@@ -53,6 +53,8 @@ function render(){
               checker.src = `${PLAYER[cell][king]}`;
             } else if(cell == 1 || cell == -1){
               checker.src = `${PLAYER[cell].P}`
+            } else {
+              checker.src = "";
             };
         });
     });
@@ -72,19 +74,36 @@ function render(){
 document.getElementById('btn').addEventListener('click', render);
 
 function handlePiece(evt){
-
+    if(!initSq) {
+        initSq = evt;
+        handleInitPieceSelctor(evt);
+    } else if (initSq) {
+        handlePieceMove(initSq, evt);
+        // document.querySelectorAll('img').forEach(img => img.getAttribute('opacity') === '0.5')
+    }
 };
 
-function handlePieceSelctor(evt){
-    let idx = evt.target.id;
-    let rowIdx = idx.charAt(1);
-    let colIdx = idx.charAt(3);
-        document.querySelectorAll('img').forEach(img => img.setAttribute('style', '1'));
-        evt.target.style.opacity = "0.5";
+function handleInitPieceSelctor(initEvt){
+    initSq = initEvt;
+    document.querySelectorAll('img').forEach(img => img.setAttribute('style', '1'));
+    initEvt.target.style.opacity = "0.5";
 };
 
-function handleMove(evt){
+function handlePieceMove(iSq, fSq){
+    let initRowIdx = iSq.target.parentElement.id.charAt(1);
+    let initColIdx = iSq.target.parentElement.id.charAt(3);
+    let finRowIdx = fSq.target.id.charAt(1);
+    let finColIdx = fSq.target.id.charAt(3);
 
+    if(board[initRowIdx][initColIdx] == 1 || board[initRowIdx][initColIdx] == -1 || board[initRowIdx][initColIdx] == 0){
+        board[initRowIdx][initColIdx] = 0;
+        board[finRowIdx][finColIdx] = turn;
+    } else if(board[initRowIdx][initColIdx] == "1K" || board[initRowIdx][initColIdx] == "-1K"){
+        board[initRowIdx][initColIdx] = 0;
+        board[finRowIdx][finColIdx] = `${turn}K`;
+    }
+
+render();
 };
 
 init();
