@@ -49,17 +49,17 @@ class piece{
     };
 
     checkDest(initIdx, finIdx, pieceMoved, pieceMovedTo){
-        console.log('this works');
-        console.log(pieceMovedTo);
-        console.log(pieceMoved);
-
-        while (!pieceMovedTo == 0 && !pieceMovedTo.colorCode == this.colorCode) {
-            this.move(initIdx, finIdx, pieceMoved, pieceMovedTo);
-        }
+        console.log(this.colorCode);
+        console.log(!pieceMovedTo.colorCode == this.colorCode);
         if(pieceMovedTo == 0){
             this.move(initIdx, finIdx, pieceMoved, pieceMovedTo);
+        } else if (!pieceMovedTo == 0){
+            if(pieceMovedTo.colorCode == this.colorCode){
+                alert("You can't jump your own piece");
+            } else {
+                console.log('jump');
+            }
         }
-    
     };
 
     checkMove(initSq, initIdx, finIdx, pieceMoved, pieceMovedTo){
@@ -80,6 +80,9 @@ class piece{
             alert('This Move is Not Valid!');
         };
     };
+    // jump(initSq, initIdx, finIdx, pieceMoved, pieceMovedTo){
+    //     if(piece)
+    // };
 };
 
 /*----- app's state (variables) -----*/ 
