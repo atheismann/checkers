@@ -52,12 +52,9 @@ class piece{
         board[finIdx[0]][finIdx[1]] = pieceMoved;
         board[initIdx[0]][initIdx[1]] = 0;
 
-        render();
-
-        this.checkKing();
-
         turn *= -1;
-
+        render();
+        this.checkKing();
     };
 
     checkDest(){
@@ -66,10 +63,10 @@ class piece{
         } else if (!pieceMovedTo == 0){
             if(pieceMovedTo.colorCode == this.colorCode){
                 initSq.target.style.opacity = '1';
-                alert("You can't jump your own piece");
+                msgEl.textContent = "You can't jump your own piece";
             } else {
                 initSq.target.style.opacity = '1';
-                alert('Try Again, Select the space on the other side of the piece you want to jump!');   
+                msgEl.textContent = 'Try Again, Select the space on the other side of the piece you want to jump!';   
             };
         };
     };
@@ -84,7 +81,7 @@ class piece{
                 this.checkDest();
             } else {
                 initSq.target.style.opacity = '1';
-                alert('This Move is Not Valid!');   
+                msgEl.textContent = 'This Move is Not Valid!';   
             };
         } else {
             this.checkJumpMove();
@@ -209,8 +206,27 @@ function handlePiece(evt){
 };
 
 function handleInitPieceSelctor(initEvt){
-    document.querySelectorAll('td').forEach(img => img.setAttribute('style', '1'));
-    initEvt.target.style.opacity = '0.5';
+    initSqClick = [
+        parseInt(initEvt.target.parentElement.id.charAt(1)),
+        parseInt(initEvt.target.parentElement.id.charAt(3)),
+    ];
+
+    initPiece = board[initSqClick[0]][initSqClick[1]];
+    
+    console.log(initPiece);
+    if(!initPiece == 0){
+        console.log(initPiece.colorCode);
+        if(initPiece.colorCode == turn){
+        document.querySelectorAll('td').forEach(img => img.setAttribute('style', '1'));
+        initEvt.target.style.opacity = '0.5';
+        } else {
+            msgEl.textContent = `Must Select a ${PLAYER[turn].name} piece`;
+            initSq = null;
+            }
+    } else {
+        msgEl.textContent = `Must Select a ${PLAYER[turn].name} piece`;
+            initSq = null;
+    };
 };
 
 function handlePieceMove(iSq, fSq){
@@ -245,6 +261,7 @@ function getWinner(){
     };
     if(winner) {
         msgEl.textContent = `${PLAYER[winner].name} Wins!`;
+        btn.textContent = 'Play Again!';
     } else {
         msgEl.textContent = `${PLAYER[turn].name}'s Turn!`
     };
