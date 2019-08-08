@@ -128,19 +128,8 @@ class piece{
                     };
                     this.move();
                 };
-        };
-            // if(board[jumpIdx[0]][jumpIdx[1]].colorCode === pieceMoved.colorCode || !board[jumpIdx[0]][jumpIdx[1]].colorCode){
-            //     msgEl.textContent = `You must jump a ${PLAYER[turn*-1].name} piece!`;
-            //     initSq.target.style.opacity = '1';
-            // }else{
-            //     board[jumpIdx[0]][jumpIdx[1]] = 0;
-            //     if(pieceMoved.colorCode === 1){
-            //         PLAYER[1].score += 1;
-            //     } else if (pieceMoved.colorCode === -1){
-            //         PLAYER[-1].score += 1;
-            //     };
-            //     this.move();
-            // };
+            };
+
         };
     };
     kingMe(){
@@ -191,7 +180,6 @@ function init(){
 };
 
 function render(){
-    //render the board
     board.forEach(function(rowArr, rowIdx){
         rowArr.forEach(function(cell, colIdx){
             let checker = document.getElementById(`r${rowIdx}c${colIdx}`);
