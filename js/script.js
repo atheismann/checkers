@@ -90,21 +90,57 @@ class piece{
 
     checkJumpMove(){
         if((parseInt(initIdx[1] - finIdx[1]) == -2 || parseInt(initIdx[1] - finIdx[1]) == 2) || parseInt(initIdx[1] - finIdx[1]) == 0){
-            let jumpedPiece = [];
-            jumpedPiece[0] = (finIdx[0] - initIdx[0])/2;
-            jumpedPiece[1] = (finIdx[1] - initIdx[1])/2;
-            let jumpIdx = initIdx.map(function(num,idx){return num + jumpedPiece[idx]});
-            if(board[jumpIdx[0]][jumpIdx[1]].colorCode === pieceMoved.colorCode){
-                msgEl.textContent = "You can't jump your own piece";
-            }else{
-                board[jumpIdx[0]][jumpIdx[1]] = 0;
-                if(pieceMoved.colorCode === 1){
-                    PLAYER[1].score += 1;
-                } else if (pieceMoved.colorCode === -1){
-                    PLAYER[-1].score += 1;
+            let jumpedPiece1 = [0,0];
+            let jumpedPiece2 = [0,0];
+            let jumpIdx1, jumpIdx2;
+            if(parseInt(initIdx[1] - finIdx[1]) == 0){
+                jumpedPiece1[0] = (finIdx[0] - initIdx[0])/2;
+                jumpedPiece1[1] = (finIdx[1] - initIdx[1])+1;
+                jumpedPiece2[0] = (finIdx[0] - initIdx[0])/2;
+                jumpedPiece2[1] = (finIdx[1] - initIdx[1])-1;
+                jumpIdx1 = initIdx.map(function(num,idx){return num + jumpedPiece1[idx]});
+                jumpIdx2 = initIdx.map(function(num,idx){return num + jumpedPiece2[idx]});
+            } else {
+                jumpedPiece1[0] = (finIdx[0] - initIdx[0])/2;
+                jumpedPiece1[1] = (finIdx[1] - initIdx[1])/2;
+
+                jumpIdx1 = initIdx.map(function(num,idx){return num + jumpedPiece1[idx]});
+            }
+            
+            if((board[jumpIdx1[0]][jumpIdx1[1]].colorCode === pieceMoved.colorCode && board[jumpIdx2[0]][jumpIdx2[1]].colorCode === pieceMoved.colorCode) || (!board[jumpIdx1[0]][jumpIdx1[1]].colorCode && !board[jumpIdx2[0]][jumpIdx2[1]].colorCode)){
+                msgEl.textContent = `You must jump a ${PLAYER[turn*-1].name} piece!`;
+                initSq.target.style.opacity = '1';
+            } else {
+                if(board[jumpIdx1[0]][jumpIdx1[1]].colorCode === pieceMoved.colorCode){
+                    board[jumpIdx2[0]][jumpIdx2[1]] = 0;
+                    if(pieceMoved.colorCode === 1){
+                        PLAYER[1].score += 1;
+                    } else if (pieceMoved.colorCode === -1){
+                        PLAYER[-1].score += 1;
+                    };
+                    this.move();
+                } else {
+                    board[jumpIdx1[0]][jumpIdx1[1]] = 0;
+                    if(pieceMoved.colorCode === 1){
+                        PLAYER[1].score += 1;
+                    } else if (pieceMoved.colorCode === -1){
+                        PLAYER[-1].score += 1;
+                    };
+                    this.move();
                 };
-                this.move();
-            };
+        };
+            // if(board[jumpIdx[0]][jumpIdx[1]].colorCode === pieceMoved.colorCode || !board[jumpIdx[0]][jumpIdx[1]].colorCode){
+            //     msgEl.textContent = `You must jump a ${PLAYER[turn*-1].name} piece!`;
+            //     initSq.target.style.opacity = '1';
+            // }else{
+            //     board[jumpIdx[0]][jumpIdx[1]] = 0;
+            //     if(pieceMoved.colorCode === 1){
+            //         PLAYER[1].score += 1;
+            //     } else if (pieceMoved.colorCode === -1){
+            //         PLAYER[-1].score += 1;
+            //     };
+            //     this.move();
+            // };
         };
     };
     kingMe(){
@@ -213,18 +249,18 @@ function handleInitPieceSelctor(initEvt){
 
     initPiece = board[initSqClick[0]][initSqClick[1]];
     
-    console.log(initPiece);
     if(!initPiece == 0){
-        console.log(initPiece.colorCode);
         if(initPiece.colorCode == turn){
         document.querySelectorAll('td').forEach(img => img.setAttribute('style', '1'));
         initEvt.target.style.opacity = '0.5';
         } else {
             msgEl.textContent = `Must Select a ${PLAYER[turn].name} piece`;
+            initEvt.target.style.opacity = '1';
             initSq = null;
             }
     } else {
         msgEl.textContent = `Must Select a ${PLAYER[turn].name} piece`;
+        initEvt.target.style.opacity = '1';
             initSq = null;
     };
 };
@@ -241,14 +277,25 @@ function handlePieceMove(iSq, fSq){
     
     pieceMoved = board[initIdx[0]][initIdx[1]];
 
+    if(isNaN(finIdx[0])){
+        msgEl.textContent = "You can't move there, try again!"
+        initSq = null;
+    } else {
+        if(finIdx[0] === ''){
+            finIdx = {
+                'row' : parseInt(fSq.target.parentElement.id.charAt(1)),
+                'col' : parseInt(fSq.target.parentElement.id.charAt(3)),
+            }
+        };
+        pieceMovedTo = board[finIdx[0]][finIdx[1]];
+
+    };
     if(finIdx[0] === ''){
         finIdx = {
             'row' : parseInt(fSq.target.parentElement.id.charAt(1)),
             'col' : parseInt(fSq.target.parentElement.id.charAt(3)),
         }
     };
-    pieceMovedTo = board[finIdx[0]][finIdx[1]];
-
     
     pieceMoved.checkBasicMove();
 };
@@ -292,33 +339,5 @@ function setInitPiece() {
     w11 = new piece ('w11', -1, 'P', [7,4]);
     w12 = new piece ('w12', -1, 'P', [7,6]);
 };
-
-function jump(newSq){
-    console.log(newSq);
-    // let jumpIdx = {
-    //     'row' : newSq.target.id.charAt(1),
-    //     'col' : newSq.target.id.charAt(3),
-    // };
-    // console.log(jumpIdx);
-    // console.log(parseInt(newSq));
-    // console.log(pieceMovedTo);
-    // console.log(initIdx);
-    // console.log(finIdx);
-    // while (pieceMovedTo.color){
-    //     msgEl.textContent = 'Select Square to Jump to';
-    //     console.log(newSq);
-    //     console.log(pieceMovedTo);
-    //     console.log(initIdx);
-    //     console.log(finIdx);
-    //     pieceMoved = pieceMovedTo;
-    //     finIdx[0] = newSq.target.id.charAt(1);
-    //     finIdx[1] = newSq.target.id.charAt(3);
-    //     pieceMovedTo = board[finIdx[0]][finIdx[1]];
-    //     console.log(pieceMovedTo);
-    //     console.log(initIdx);
-    //     console.log(finIdx);
-    //     break;
-    // }
-}
 
 init();
