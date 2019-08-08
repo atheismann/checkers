@@ -1,5 +1,5 @@
 /*----- app's state (variables) -----*/ 
-let board, turn, winner, initSq, initIdx, finIdx, pieceMoved, pieceMovedTo;
+let board, turn, winner, initSq, initIdx, finIdx, pieceMoved, pieceMovedTo, jumpAllowed;
 let b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12;
 let w1, w2, w3, w4, w5, w6, w7, w8, w9, w10, w11, w12;
 
@@ -97,6 +97,7 @@ class piece{
             if(board[jumpIdx[0]][jumpIdx[1]].colorCode === pieceMoved.colorCode){
                 msgEl.textContent = "You can't jump your own piece!";
                 initSq.target.style.opacity = '1';
+                return false;
             }else{
                 board[jumpIdx[0]][jumpIdx[1]] = 0;
                 if(pieceMoved.colorCode === 1){
@@ -105,12 +106,54 @@ class piece{
                     PLAYER[-1].score += 1;
                 };
                 this.move();
+                initIdx = finIdx;
+                this.doubleJump();
+               
             };
-        } else {
-            msgEl.textContent = 'That move is not valid!';
-            initSq.target.style.opacity = '1';
-
-        }
+        };
+    };
+    doubleJump(){
+        let possJump1 = [];
+        let possJump2 = [];
+        let possJump3 = [];
+        let possJump4 = [];
+        possJump1[0] = initIdx[0]-2;
+        possJump1[1] = initIdx[1]-2;
+        possJump2[0] = initIdx[0]-2;
+        possJump2[1] = initIdx[1]+2;
+        possJump3[0] = initIdx[0]+2;
+        possJump3[1] = initIdx[1]+2;
+        possJump4[0] = initIdx[0]+2;
+        possJump4[1] = initIdx[1]-2;
+        console.log(possJump1);
+        console.log(possJump2);
+        console.log(possJump3);
+        console.log(possJump4);
+        if(board[possJump1[0]][possJump1[1]] == 0){
+            console.log('1 works');
+            finIdx = possJump1;
+            if(!this.checkJumpMove){
+                if(board[possJump2[0]][possJump2[1]] == 0){
+                    console.log('2 works');
+                    finIdx = possJump2;
+                    if(!this.checkJumpMove){
+                        if(board[possJump3[0]][possJump3[1]] == 0){
+                            console.log('3 works');
+                            finIdx = possJump3;
+                            if(!this.checkJumpMove){
+                                if(board[possJump4[0]][possJump4[1]] == 0){
+                                    console.log('4 works');
+                                    finIdx = possjump4;
+                                        if(!this.checkJumpMove){
+                                            msgEl.textContent = 'This move is not valid!';
+                                        } else{this.checkJumpMove();};
+                                };
+                            } else {this.checkJumpMove();};
+                        };
+                    } else {this.checkJumpMove();};  
+                };
+            } else {this.checkJumpMove();};
+        };
     };
 
     // Replace checkJumpMove with commented code below to enable vertical jump functionality for expanded game play
@@ -294,6 +337,7 @@ function handlePieceMove(iSq, fSq){
 
     if(isNaN(finIdx[0])){
         msgEl.textContent = "You can't move there, try again!"
+        initSq.target.style.opacity = '1';
         initSq = null;
     } else {
         if(finIdx[0] === ''){
