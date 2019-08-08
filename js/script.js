@@ -89,49 +89,76 @@ class piece{
     };
 
     checkJumpMove(){
-        if((parseInt(initIdx[1] - finIdx[1]) == -2 || parseInt(initIdx[1] - finIdx[1]) == 2) || parseInt(initIdx[1] - finIdx[1]) == 0){
-            let jumpedPiece1 = [0,0];
-            let jumpedPiece2 = [0,0];
-            let jumpIdx1, jumpIdx2;
-            if(parseInt(initIdx[1] - finIdx[1]) == 0){
-                jumpedPiece1[0] = (finIdx[0] - initIdx[0])/2;
-                jumpedPiece1[1] = (finIdx[1] - initIdx[1])+1;
-                jumpedPiece2[0] = (finIdx[0] - initIdx[0])/2;
-                jumpedPiece2[1] = (finIdx[1] - initIdx[1])-1;
-                jumpIdx1 = initIdx.map(function(num,idx){return num + jumpedPiece1[idx]});
-                jumpIdx2 = initIdx.map(function(num,idx){return num + jumpedPiece2[idx]});
-            } else {
-                jumpedPiece1[0] = (finIdx[0] - initIdx[0])/2;
-                jumpedPiece1[1] = (finIdx[1] - initIdx[1])/2;
-
-                jumpIdx1 = initIdx.map(function(num,idx){return num + jumpedPiece1[idx]});
-            }
-            
-            if((board[jumpIdx1[0]][jumpIdx1[1]].colorCode === pieceMoved.colorCode && board[jumpIdx2[0]][jumpIdx2[1]].colorCode === pieceMoved.colorCode) || (!board[jumpIdx1[0]][jumpIdx1[1]].colorCode && !board[jumpIdx2[0]][jumpIdx2[1]].colorCode)){
-                msgEl.textContent = `You must jump a ${PLAYER[turn*-1].name} piece!`;
+        if((parseInt(initIdx[1] - finIdx[1]) == -2 || parseInt(initIdx[1] - finIdx[1]) == 2)){
+            let jumpedPiece = [];
+            jumpedPiece[0] = (finIdx[0] - initIdx[0])/2;
+            jumpedPiece[1] = (finIdx[1] - initIdx[1])/2;
+            let jumpIdx = initIdx.map(function(num,idx){return num + jumpedPiece[idx]});
+            if(board[jumpIdx[0]][jumpIdx[1]].colorCode === pieceMoved.colorCode){
+                msgEl.textContent = "You can't jump your own piece!";
                 initSq.target.style.opacity = '1';
-            } else {
-                if(board[jumpIdx1[0]][jumpIdx1[1]].colorCode === pieceMoved.colorCode){
-                    board[jumpIdx2[0]][jumpIdx2[1]] = 0;
-                    if(pieceMoved.colorCode === 1){
-                        PLAYER[1].score += 1;
-                    } else if (pieceMoved.colorCode === -1){
-                        PLAYER[-1].score += 1;
-                    };
-                    this.move();
-                } else {
-                    board[jumpIdx1[0]][jumpIdx1[1]] = 0;
-                    if(pieceMoved.colorCode === 1){
-                        PLAYER[1].score += 1;
-                    } else if (pieceMoved.colorCode === -1){
-                        PLAYER[-1].score += 1;
-                    };
-                    this.move();
+            }else{
+                board[jumpIdx[0]][jumpIdx[1]] = 0;
+                if(pieceMoved.colorCode === 1){
+                    PLAYER[1].score += 1;
+                } else if (pieceMoved.colorCode === -1){
+                    PLAYER[-1].score += 1;
                 };
+                this.move();
             };
+        } else {
+            msgEl.textContent = 'That move is not valid!';
+            initSq.target.style.opacity = '1';
 
-        };
+        }
     };
+
+    // Replace checkJumpMove with commented code below to enable vertical jump functionality for expanded game play
+    // 
+    // checkJumpMove(){
+    //     if((parseInt(initIdx[1] - finIdx[1]) == -2 || parseInt(initIdx[1] - finIdx[1]) == 2) || parseInt(initIdx[1] - finIdx[1]) == 0){
+    //         let jumpedPiece1 = [0,0];
+    //         let jumpedPiece2 = [0,0];
+    //         let jumpIdx1, jumpIdx2;
+    //         if(parseInt(initIdx[1] - finIdx[1]) == 0){
+    //             jumpedPiece1[0] = (finIdx[0] - initIdx[0])/2;
+    //             jumpedPiece1[1] = (finIdx[1] - initIdx[1])+1;
+    //             jumpedPiece2[0] = (finIdx[0] - initIdx[0])/2;
+    //             jumpedPiece2[1] = (finIdx[1] - initIdx[1])-1;
+    //             jumpIdx1 = initIdx.map(function(num,idx){return num + jumpedPiece1[idx]});
+    //             jumpIdx2 = initIdx.map(function(num,idx){return num + jumpedPiece2[idx]});
+    //         } else {
+    //             jumpedPiece1[0] = (finIdx[0] - initIdx[0])/2;
+    //             jumpedPiece1[1] = (finIdx[1] - initIdx[1])/2;
+
+    //             jumpIdx1 = initIdx.map(function(num,idx){return num + jumpedPiece1[idx]});
+    //         }
+            
+    //         if((board[jumpIdx1[0]][jumpIdx1[1]].colorCode === pieceMoved.colorCode && board[jumpIdx2[0]][jumpIdx2[1]].colorCode === pieceMoved.colorCode) || (!board[jumpIdx1[0]][jumpIdx1[1]].colorCode && !board[jumpIdx2[0]][jumpIdx2[1]].colorCode)){
+    //             msgEl.textContent = `You must jump a ${PLAYER[turn*-1].name} piece!`;
+    //             initSq.target.style.opacity = '1';
+    //         } else {
+    //             if(board[jumpIdx1[0]][jumpIdx1[1]].colorCode === pieceMoved.colorCode){
+    //                 board[jumpIdx2[0]][jumpIdx2[1]] = 0;
+    //                 if(pieceMoved.colorCode === 1){
+    //                     PLAYER[1].score += 1;
+    //                 } else if (pieceMoved.colorCode === -1){
+    //                     PLAYER[-1].score += 1;
+    //                 };
+    //                 this.move();
+    //             } else {
+    //                 board[jumpIdx1[0]][jumpIdx1[1]] = 0;
+    //                 if(pieceMoved.colorCode === 1){
+    //                     PLAYER[1].score += 1;
+    //                 } else if (pieceMoved.colorCode === -1){
+    //                     PLAYER[-1].score += 1;
+    //                 };
+    //                 this.move();
+    //             };
+    //         };
+
+    //     };
+    // };
     kingMe(){
         this.rankCode = 'K';
         this.rank = 'king';
