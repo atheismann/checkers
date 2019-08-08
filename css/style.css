@@ -3,7 +3,6 @@
 }
 
 body{
-  margin: 0 50vmin;
   height: 100vh;
   background-color: #313131;
   color: #FDDA65;
@@ -27,6 +26,7 @@ h2{
 header{
   display: flex;
   justify-content: space-between;
+  margin: 0 10vmin;
 }
 
 button{
