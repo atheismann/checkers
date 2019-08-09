@@ -3,7 +3,6 @@
 }
 
 body{
-  margin: 0 50vmin;
   height: 100vh;
   background-color: #313131;
   color: #FDDA65;
@@ -16,14 +15,21 @@ table{
   display: flex;
   justify-content: center;
   align-items: center;
-  border: none;
+}
+
+h2{
+  display: flex;
+  justify-content: center;
+  align-content: center;
 }
 
 header{
   display: flex;
   justify-content: space-between;
+  margin: 0 10vmin;
 }
-button#giveUp{
+
+button{
   background-color:#FDDA65;
   border-radius: 50px;
   height: 40px;
@@ -32,11 +38,18 @@ button#giveUp{
   margin: 20px 0;
 }
 
+img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .red{
   background-color :#FB0000;
   height: 10vh;
   width: 10vmin;
 }
+
 .white{
   background-color: #FFFFFF;
   height: 10vh;
