@@ -63,7 +63,7 @@ class piece{
         } else if (!pieceMovedTo == 0){
             if(pieceMovedTo.colorCode == this.colorCode){
                 initSq.target.style.opacity = '1';
-                msgEl.textContent = "You can't jump your own piece";
+                msgEl.textContent = "You Can't Move Here";
             } else {
                 initSq.target.style.opacity = '1';
                 msgEl.textContent = 'Try Again, Select the space on the other side of the piece you want to jump!';   
@@ -73,18 +73,25 @@ class piece{
 
     checkBasicMove(){
         if(parseInt(initIdx[1] - finIdx[1]) == -1 || parseInt(initIdx[1] - finIdx[1]) == 1){        
-            if(parseInt(initIdx[0] - finIdx[0]) < 0 && parseInt(initIdx[0] - finIdx[0]) >= -1 && pieceMoved.colorCode == 1) {
+            if(parseInt(initIdx[0] - finIdx[0]) < 0 && parseInt(initIdx[0] - finIdx[0]) == -1 && pieceMoved.colorCode == 1) {
                 this.checkDest();
-            } else if(parseInt(initIdx[0] - finIdx[0]) > 0 && parseInt(initIdx[0] - finIdx[0]) <= 1 && pieceMoved.colorCode == -1){
+            } else if(parseInt(initIdx[0] - finIdx[0]) > 0 && parseInt(initIdx[0] - finIdx[0]) == 1 && pieceMoved.colorCode == -1){
                 this.checkDest();
             } else if(this.rank == 'king'){
                 this.checkDest();
             } else {
                 initSq.target.style.opacity = '1';
-                msgEl.textContent = 'This Move is Not Valid!';   
+                msgEl.textContent = 'This Move is Not Valid!';  
+                return false; 
             };
-        } else {
-            this.checkJumpMove();
+        } else if(parseInt(initIdx[0] - finIdx[0]) < 0 && parseInt(initIdx[0] - finIdx[0]) < -1 && pieceMoved.colorCode == 1) {
+                this.checkJumpMove();
+            } else if(parseInt(initIdx[0] - finIdx[0]) > 0 && parseInt(initIdx[0] - finIdx[0]) > 1 && pieceMoved.colorCode == -1){
+                this.checkJumpMove();
+            } else if(this.rank == 'king'){
+                this.checkJumpMove();
+            } else { 
+                return false; 
         };
     };
 
@@ -106,13 +113,16 @@ class piece{
                     PLAYER[-1].score += 1;
                 };
                 this.move();
-                initIdx = finIdx;
-                this.doubleJump();
-               
+                if(this.doubleJump() === true){
+                    turn *= -1;
+                    render();
+                };
             };
         };
     };
+    
     doubleJump(){
+        initIdx = finIdx
         let possJump1 = [];
         let possJump2 = [];
         let possJump3 = [];
@@ -128,32 +138,124 @@ class piece{
         console.log(possJump1);
         console.log(possJump2);
         console.log(possJump3);
-        console.log(possJump4);
-        if(board[possJump1[0]][possJump1[1]] == 0){
-            console.log('1 works');
-            finIdx = possJump1;
-            if(!this.checkJumpMove){
-                if(board[possJump2[0]][possJump2[1]] == 0){
-                    console.log('2 works');
-                    finIdx = possJump2;
-                    if(!this.checkJumpMove){
-                        if(board[possJump3[0]][possJump3[1]] == 0){
-                            console.log('3 works');
-                            finIdx = possJump3;
-                            if(!this.checkJumpMove){
-                                if(board[possJump4[0]][possJump4[1]] == 0){
-                                    console.log('4 works');
-                                    finIdx = possjump4;
-                                        if(!this.checkJumpMove){
-                                            msgEl.textContent = 'This move is not valid!';
-                                        } else{this.checkJumpMove();};
-                                };
-                            } else {this.checkJumpMove();};
-                        };
-                    } else {this.checkJumpMove();};  
-                };
-            } else {this.checkJumpMove();};
-        };
+        console.log(possJump4); 
+        if((possJump1[0] < 8 && possJump1[0] > -1) && (possJump1[1] < 8 && possJump1[1] > -1)){
+            if (board[possJump1[0]][possJump1[1]] == 0){
+                return true;
+            } else if (board[possJump2[0]][possJump2[1]] == 0){
+                return true;
+            } else if (board[possJump3[0]][possJump3[1]] == 0){
+                return true;
+            } else if (board[possJump4[0]][possJump4[1]] == 0){
+                return true; 
+            }; 
+        } else if((possJump2[0] < 8 && possJump2[0] > -1) && (possJump2[1] < 8 && possJump2[1] > -1)){
+            if (board[possJump2[0]][possJump2[1]] == 0){
+                return true;
+            } else if (board[possJump3[0]][possJump3[1]] == 0){
+                return true;
+            } else if (board[possJump4[0]][possJump4[1]] == 0){
+                return true; 
+            }; 
+        } else if((possJump3[0] < 8 && possJump3[0] > -1) && (possJump3[1] < 8 && possJump3[1] > -1)){
+            if (board[possJump3[0]][possJump3[1]] == 0){
+                return true;
+            } else if (board[possJump4[0]][possJump4[1]] == 0){
+                return true; 
+            }; 
+        } else if((possJump4[0] < 8 && possJump4[0] > -1) && (possJump4[1] < 8 && possJump4[1] > -1)){
+            if (board[possJump4[0]][possJump4[1]] == 0){
+                return true; 
+            };
+        } else {
+            return false;
+        }
+
+        // if((possJump1[0] < 8 && possJump1[0] > -1) && (possJump1[1] < 8 && possJump1[1] > -1)){
+        //     if(board[possJump1[0]][possJump1[1]] == 0){
+        //         console.log('11 works');
+        //         finIdx = possJump1;
+        //         if(!!this.checkBasicMove()){
+        //             this.checkBasicMove();
+        //         } else if(possJump2.some(n => -1 < n < 8)){
+        //             if(board[possJump2[0]][possJump2[1]] == 0){
+        //                 console.log('12 works');
+        //                 finIdx = possJump2;
+        //                 if(!!this.checkBasicMove()){
+        //                     this.checkBasicMove();
+        //                 } else if(possJump3.some(n => -1 < n < 8)){
+        //                     if(board[possJump3[0]][possJump3[1]] == 0){
+        //                         console.log('13 works');
+        //                         finIdx = possJump3;
+        //                         if(!!this.checkBasicMove()){
+        //                             this.checkBasicMove();
+        //                         } else if(possJump4.some(n => -1 < n < 8)){
+        //                             if(board[possJump4[0]][possJump4[1]] == 0){
+        //                                 console.log('14 works');
+        //                                 finIdx = possJump4;
+        //                                 if(!!this.checkBasicMove()){
+        //                                     this.checkBasicMove();
+        //                                 };
+        //                             };
+        //                         };
+        //                     };
+        //                 };
+        //             };
+        //         };
+        //     };
+        // } else if((possJump2[0] < 8 && possJump2[0] > -1) && (possJump2[1] < 8 && possJump2[1] > -1)){
+        //     if(board[possJump2[0]][possJump2[1]] == 0){
+        //         console.log('12 works');
+        //         finIdx = possJump2;
+        //         if(!!this.checkBasicMove()){
+        //             this.checkBasicMove();
+        //         } else if(possJump3.some(n => -1 < n < 8)){
+        //             if(board[possJump3[0]][possJump3[1]] == 0){
+        //                 console.log('13 works');
+        //                 finIdx = possJump3;
+        //                 if(!!this.checkBasicMove()){
+        //                     this.checkBasicMove();
+        //                 } else if(possJump4.some(n => -1 < n < 8)){
+        //                     if(board[possJump4[0]][possJump4[1]] == 0){
+        //                         console.log('14 works');
+        //                         finIdx = possJump4;
+        //                         if(!!this.checkBasicMove()){
+        //                             this.checkBasicMove();
+        //                         };
+                        
+                    
+        //                     };
+        //                 };
+        //             };
+        //         };
+        //     };
+        // } else if((possJump3[0] < 8 && possJump3[0] > -1) && (possJump3[1] < 8 && possJump3[1] > -1)){
+        //     if(board[possJump3[0]][possJump3[1]] == 0){
+        //         console.log('13 works');
+        //         finIdx = possJump3;
+        //         if(!!this.checkBasicMove()){
+        //             this.checkBasicMove();
+        //         } else if(possJump4.some(n => -1 < n < 8)){
+        //             if(board[possJump4[0]][possJump4[1]] == 0){
+        //                 console.log('14 works');
+        //                 finIdx = possJump4;
+        //                 if(!!this.checkBasicMove()){
+        //                     this.checkBasicMove();
+        //                 };
+                
+            
+        //             };
+        //         };
+        //     };
+        // } else if((possJump4[0] < 8 && possJump4[0] > -1) && (possJump4[1] < 8 && possJump4[1] > -1)){
+        //     if(board[possJump4[0]][possJump4[1]] == 0){
+        //         console.log('14 works');
+        //         finIdx = possJump4;
+        //         if(!!this.checkBasicMove()){
+        //             this.checkBasicMove();
+        //         };
+        //     };
+        // };
     };
 
     // Replace checkJumpMove with commented code below to enable vertical jump functionality for expanded game play
@@ -226,7 +328,7 @@ let msgEl = document.getElementById('msg');
 let btn = document.getElementById('btn');
 
 /*----- event listeners -----*/ 
-document.querySelectorAll('td').forEach(td => td.addEventListener('click', handleClick));
+document.querySelectorAll('td').forEach(td => td.addEventListener('click', handlePiece));
 
 btn.addEventListener('click', function () {if(btn.textContent === 'Start'){start();}else{init();render();}});
 
@@ -280,14 +382,6 @@ function start() {
     btn.textContent = 'Give Up!';
 
 }
-
-function handleClick(evt){
-    if(initSq === 'jump'){
-        jump(evt);
-    } else {
-        handlePiece(evt);
-    }
-};
 
 function handlePiece(evt){
     if(!initSq) {
@@ -372,6 +466,7 @@ function getWinner(){
         msgEl.textContent = `${PLAYER[turn].name}'s Turn!`
     };
 };
+
 function setInitPiece() {
     b1 = new piece ('b1', 1, 'P', [0,1]);
     b2 = new piece ('b2', 1, 'P', [0,3]);
