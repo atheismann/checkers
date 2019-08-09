@@ -2,7 +2,7 @@
 
 ## Let's Play Checkers
 
-![ScreenShot](screenshots/Checkers_Screenshot_1.png)
+![ScreenShot](screenshots/Checkers_ScreenShot_1.png)
 
 ### Technology
 -  This project was coded in HTML/CSS/JavaScript
@@ -11,7 +11,7 @@
 ### Object:
 Remove all of your opponent's checkers from the gameboard by capturing them.
 
-![InitialState](screenshots/Checkers_InitialState.png)
+![InitialState](screenshots/Checkers_InitState.png)
 
 ### How to play?
 - Player 1 will go first.
