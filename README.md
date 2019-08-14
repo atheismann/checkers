@@ -4,6 +4,8 @@
 
 ![ScreenShot](screenshots/Checkers_ScreenShot_1.png)
 
+<a href="https://atheismann.github.io/checkers>Play the Game!!</a>
+
 ### Technology
 -  This project was coded in HTML/CSS/JavaScript
 - JS Classes, Methods, Functions and other JS fun stuff was invloved in creating a really sleak and minimalistic checkers game.
