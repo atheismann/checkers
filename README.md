@@ -4,7 +4,7 @@
 
 ![ScreenShot](screenshots/Checkers_ScreenShot_1.png)
 
-<a href="https://atheismann.github.io/checkers>Play the Game!!</a>
+<a href="https://atheismann.github.io/checkers">Play the Game!!</a>
 
 ### Technology
 -  This project was coded in HTML/CSS/JavaScript
